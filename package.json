@@ -1,7 +1,6 @@
 {
-  "name": "odin-template",
+  "name": "battleship",
   "version": "1.0.0",
-  "description": "",
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specific\" && exit 1",
@@ -10,7 +9,7 @@
     "build": "webpack --config webpack.prod.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Declan Grant",
   "license": "ISC",
   "devDependencies": {
     "css-loader": "^7.1.2",
@@ -25,5 +24,15 @@
   "dependencies": {
     "eslint": "^7.32.0",
     "lodash": "^4.17.21"
-  }
+  },
+  "main": "./src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dec-gr/battleship.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dec-gr/battleship/issues"
+  },
+  "homepage": "https://github.com/dec-gr/battleship#readme",
+  "description": ""
 }
