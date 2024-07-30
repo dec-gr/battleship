@@ -1,0 +1,28 @@
+.player-board {
+  display: grid;
+  grid-template-columns: repeat(10, 50px);
+  grid-template-rows: repeat(10, 50px);
+}
+
+.square {
+  height: 50px;
+  width: 50px;
+  background-color: blue;
+  border: solid 2px black;
+}
+
+.square:hover {
+  background-color: aqua;
+}
+
+.missSquare {
+  background-color: grey;
+}
+
+.hitSquare {
+  background-color: red;
+}
+
+.isSunk {
+  background-color: darkred;
+}
