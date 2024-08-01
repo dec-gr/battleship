@@ -43,6 +43,7 @@ class GameBoardClass {
     } else {
       this.grid[x][y].ship.hit();
       this.grid[x][y].state = 1;
+      return true;
     }
   }
 

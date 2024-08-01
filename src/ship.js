@@ -12,6 +12,7 @@ class shipClass {
 
   isSunk() {
     this.sunk = this.numHits >= this.length;
+    return this.sunk;
   }
 }
 

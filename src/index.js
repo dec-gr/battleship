@@ -27,9 +27,9 @@ const generateBoardFromGrid = (grid) => {
         }
       }
       //delete after
-      if (grid[i][j].ship != null) {
-        square.classList.add('placedShip');
-      }
+      // if (grid[i][j].ship != null) {
+      //   square.classList.add('placedShip');
+      // }
       //delete after
     }
     playerBoard.appendChild(divColumn);
@@ -114,6 +114,7 @@ const gameFlow = async () => {
 
   await placePlayerShips();
   console.log('Playing Now');
+  let compGuessQueue = [];
 
   const boardContainerLeft = document.querySelector('.board-container-left');
   boardContainerLeft.innerHTML = '';
@@ -129,8 +130,6 @@ const gameFlow = async () => {
   boardContainerRight.appendChild(playerComputerBoard);
 
   while (gameOver != true) {
-    console.log('ABOVE');
-
     const squaresArray = boardContainerRight.querySelectorAll('.square');
     const playerTurn = () => {
       return new Promise((resolve) => {
@@ -164,24 +163,48 @@ const gameFlow = async () => {
     boardContainerRight.innerHTML = '';
     boardContainerRight.appendChild(playerComputerBoard);
 
-    console.log('Playerhas Attacked');
-
     if (playerComputer.hasLost()) {
       alert('Player has won');
       gameOver = true;
     }
 
     let isValidMove = false;
+    let compX;
+    let compY;
+    let shipHit = false;
+    let shipSunk = false;
     while (isValidMove != true) {
-      try {
-        const [compX, compY] = playerComputer.generateGuess();
+      if (compGuessQueue.length > 0) {
+        [compX, compY] = compGuessQueue.pop();
+      } else {
+        [compX, compY] = playerComputer.generateGuess();
+      }
 
-        player1.gameBoard.recieveAttack(compX, compY);
+      try {
+        shipHit = player1.gameBoard.recieveAttack(compX, compY);
+
         isValidMove = true;
+
+        if (shipHit) {
+          console.log(shipSunk);
+
+          shipSunk = player1.gameBoard.grid[compX][compY].ship.sunk;
+        }
       } catch {
         console.log('Failed Guess');
       }
     }
+
+    if (shipHit && !shipSunk) {
+      compGuessQueue.push([compX, compY + 1]);
+      compGuessQueue.push([compX, compY - 1]);
+      compGuessQueue.push([compX + 1, compY]);
+      compGuessQueue.push([compX - 1, compY]);
+    } else if (shipSunk) {
+      compGuessQueue = [];
+    }
+
+    console.log(compGuessQueue);
 
     playerBoard = generateBoardFromGrid(player1.gameBoard.grid);
     boardContainerLeft.innerHTML = '';
@@ -191,8 +214,6 @@ const gameFlow = async () => {
       alert('Computer has won');
       gameOver = true;
     }
-
-    console.log('HERE');
   }
 };
 
