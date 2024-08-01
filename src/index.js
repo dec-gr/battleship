@@ -1,196 +1,199 @@
 import './style.css';
+const PlayerClass = require('./player');
 
-const grid = [
-  [
-    { state: null, ship: null }, // 0, 0
-    { state: null, ship: null }, // 0, 1
-    { state: 0, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: 0, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: 0, ship: null },
-    { state: null, ship: null },
-  ],
-  [
-    { state: null, ship: null }, // 1, 0
-    { state: null, ship: null }, // 1, 1
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: 1, ship: { sunk: true } },
-    { state: 1, ship: { sunk: true } },
-    { state: 1, ship: { sunk: true } },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-  ],
-  [
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: 0, ship: null },
-    { state: 0, ship: null },
-    { state: 0, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-  ],
-  [
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: 1, ship: { sunk: false } },
-    { state: 1, ship: { sunk: false } },
-    { state: 1, ship: { sunk: false } },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-  ],
-  [
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-  ],
-  [
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-  ],
-  [
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-  ],
-  [
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-  ],
-  [
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-  ],
-  [
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-    { state: null, ship: null },
-  ],
-];
+const generateBoardFromGrid = (grid) => {
+  const playerBoard = document.createElement('div');
+  playerBoard.classList.add('player-board');
+  for (let i = 0; i <= 9; i += 1) {
+    const divColumn = document.createElement('div');
+    for (let j = 9; j >= 0; j -= 1) {
+      const square = document.createElement('div');
+      square.classList.add('square');
+      square.setAttribute('data.x', i);
+      square.setAttribute('data.y', j);
+      square.textContent = `${i}, ${j}`;
 
-const playerBoard = document.querySelector('.player-board');
+      divColumn.appendChild(square);
 
-for (let i = 0; i <= 9; i += 1) {
-  const divColumn = document.createElement('div');
-  for (let j = 9; j >= 0; j -= 1) {
-    const square = document.createElement('div');
-    square.classList.add('square');
-    square.setAttribute('data.x', i);
-    square.setAttribute('data.y', j);
-    square.textContent = `${i}, ${j}`;
-    divColumn.appendChild(square);
-
-    if (grid[i][j].state != null) {
-      if (grid[i][j].state === 0) {
-        square.classList.add('missSquare');
-      } else if (grid[i][j].state === 1) {
-        if (grid[i][j].ship.sunk === true) {
-          square.classList.add('isSunk');
-        } else {
-          square.classList.add('hitSquare');
+      if (grid[i][j].state != null) {
+        if (grid[i][j].state === 0) {
+          square.classList.add('missSquare');
+        } else if (grid[i][j].state === 1) {
+          if (grid[i][j].ship.sunk === true) {
+            square.classList.add('isSunk');
+          } else {
+            square.classList.add('hitSquare');
+          }
         }
       }
+      //delete after
+      if (grid[i][j].ship != null) {
+        square.classList.add('placedShip');
+      }
+      //delete after
+    }
+    playerBoard.appendChild(divColumn);
+  }
+  return playerBoard;
+};
+
+// Initialise async await attempt
+
+const playerBoardCont1 = document.querySelector('.board-container-left');
+const player1 = new PlayerClass();
+
+let player1Board = generateBoardFromGrid(player1.gameBoard.grid);
+playerBoardCont1.appendChild(player1Board);
+
+const populateCompShips = (compPlayer) => {
+  const compShipLengths = [2, 3, 3, 4, 5];
+  let shipsPlaced = 0;
+  let currentLength = compShipLengths.shift();
+
+  while (shipsPlaced < 5) {
+    const x = Math.floor(Math.random() * 10);
+    const y = Math.floor(Math.random() * 10);
+    const orientationArray = ['h', 'v'];
+    const origuess = Math.floor(Math.random() * 2);
+    console.log(origuess);
+    const orientation = orientationArray[origuess];
+    try {
+      console.log(orientation);
+      compPlayer.gameBoard.placeShip(currentLength, [x, y], orientation);
+      currentLength = compShipLengths.shift();
+      shipsPlaced += 1;
+    } catch {
+      console.log('Failed Guess');
     }
   }
-  playerBoard.appendChild(divColumn);
-}
+};
 
-// const PlayerClass = require('./player');
+const playerComputer = new PlayerClass(true);
+populateCompShips(playerComputer);
 
-// const player1 = new PlayerClass();
-// const comp = new PlayerClass(true);
+// Generate Comp Spots
 
-// const letComputerAttack = true;
+const placePlayerShips = async () => {
+  const playerShipLengths = [2, 3, 3, 4, 5];
 
-// const shipLengths = [2, 1];
+  while (playerShipLengths.length > 0) {
+    let currentLength = playerShipLengths.shift();
+    await placeShipOnBoard(currentLength);
+    console.log('back in the while');
 
-// shipLengths.forEach((length) => {
-//   let x = Number.parseInt(prompt(`X coord for ship length ${length}`), 10);
-//   let y = Number.parseInt(prompt(`Y coord for ship length ${length}`), 10);
-//   player1.gameBoard.placeShip(length, [x, y]);
-// });
+    player1Board = generateBoardFromGrid(player1.gameBoard.grid);
+    playerBoardCont1.innerHTML = '';
+    playerBoardCont1.appendChild(player1Board);
+  }
 
-// console.log(player1.hasLost());
+  console.log('All Ships Placed');
+};
 
-// console.log(player1.gameBoard);
+const placeShipOnBoard = (currentLength) =>
+  new Promise((resolve) => {
+    player1Board.addEventListener('click', (event) => {
+      console.log(event.target);
+      try {
+        player1.gameBoard.placeShip(
+          currentLength,
+          [
+            Number.parseInt(event.target.getAttribute('data.x'), 10),
+            Number.parseInt(event.target.getAttribute('data.y'), 10),
+          ],
+          'h'
+        );
+        resolve('good');
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  });
 
-// while (player1.hasLost() !== true) {
-//   try {
-//     let x;
-//     let y;
-//     if (letComputerAttack) {
-//       [x, y] = comp.generateGuess();
-//     } else {
-//       x = Number.parseInt(prompt(`X coord for attack`), 10);
-//       y = Number.parseInt(prompt(`Y coord for attack`), 10);
-//     }
-//     player1.gameBoard.recieveAttack(x, y);
-//     console.log(player1.gameBoard);
-//   } catch (error) {
-//     if (!letComputerAttack) {
-//       alert(error);
-//     }
-//   }
-// }
+const gameFlow = async () => {
+  let gameOver = false;
 
-// alert('All ships destroyed!!!');
+  await placePlayerShips();
+  console.log('Playing Now');
 
-// prompt player 1 for attack on player 2
-// prompt player 2 for attack on player 1
-// prompt player 1 for attack on player 2
-// prompt plater 2 for attack on player 1
+  const boardContainerLeft = document.querySelector('.board-container-left');
+  boardContainerLeft.innerHTML = '';
+  const boardContainerRight = document.querySelector('.board-container-right');
+  boardContainerRight.innerHTML = '';
+
+  let playerBoard = generateBoardFromGrid(player1.gameBoard.grid);
+  boardContainerLeft.appendChild(playerBoard);
+
+  let playerComputerBoard = generateBoardFromGrid(
+    playerComputer.gameBoard.grid
+  );
+  boardContainerRight.appendChild(playerComputerBoard);
+
+  while (gameOver != true) {
+    console.log('ABOVE');
+
+    const squaresArray = boardContainerRight.querySelectorAll('.square');
+    const playerTurn = () => {
+      return new Promise((resolve) => {
+        squaresArray.forEach((square) => {
+          square.addEventListener('click', () => {
+            console.log('Gride:');
+            console.log(
+              `x gride: ${square.getAttribute(
+                'data.x'
+              )}, y gride: ${square.getAttribute('data.y')}`
+            );
+            console.log(
+              playerComputer.gameBoard.grid[square.getAttribute('data.x')][
+                square.getAttribute('data.y')
+              ]
+            );
+
+            playerComputer.gameBoard.recieveAttack(
+              square.getAttribute('data.x'),
+              square.getAttribute('data.y')
+            );
+            resolve('good');
+          });
+        });
+      });
+    };
+
+    await playerTurn();
+
+    playerComputerBoard = generateBoardFromGrid(playerComputer.gameBoard.grid);
+    boardContainerRight.innerHTML = '';
+    boardContainerRight.appendChild(playerComputerBoard);
+
+    console.log('Playerhas Attacked');
+
+    if (playerComputer.hasLost()) {
+      alert('Player has won');
+      gameOver = true;
+    }
+
+    let isValidMove = false;
+    while (isValidMove != true) {
+      try {
+        const [compX, compY] = playerComputer.generateGuess();
+
+        player1.gameBoard.recieveAttack(compX, compY);
+        isValidMove = true;
+      } catch {
+        console.log('Failed Guess');
+      }
+    }
+
+    playerBoard = generateBoardFromGrid(player1.gameBoard.grid);
+    boardContainerLeft.innerHTML = '';
+    boardContainerLeft.appendChild(playerBoard);
+
+    if (player1.hasLost()) {
+      alert('Computer has won');
+      gameOver = true;
+    }
+
+    console.log('HERE');
+  }
+};
+
+gameFlow();

@@ -1,28 +1,56 @@
+.game-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.board-container-left,
+.board-container-right {
+  display: flex;
+  justify-content: space-around;
+}
+
 .player-board {
+  padding: 2px;
+  border: solid 2px rgb(255, 0, 0);
   display: grid;
   grid-template-columns: repeat(10, 50px);
   grid-template-rows: repeat(10, 50px);
+  gap: 2px;
 }
 
 .square {
   height: 50px;
   width: 50px;
-  background-color: blue;
-  border: solid 2px black;
+  background-color: #2458af;
+  margin-bottom: 2px;
+}
+
+.placedShip {
+  background-color: aqua;
 }
 
 .square:hover {
-  background-color: aqua;
+  background-color: aquamarine;
+}
+.highlight {
+  background-color: purple;
 }
 
 .missSquare {
   background-color: grey;
+  pointer-events: none;
 }
 
 .hitSquare {
   background-color: red;
+  pointer-events: none;
 }
 
 .isSunk {
   background-color: darkred;
+  pointer-events: none;
+}
+
+.deactivateBoards {
+  pointer-events: none;
 }

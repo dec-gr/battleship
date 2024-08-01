@@ -12,7 +12,7 @@ class GameBoardClass {
 
     // these could be split into other functions for checking
     // check ship fits on board
-    if (x + length * horizontal > 9 || y + length * vertical > 9) {
+    if (x + length * horizontal > 10 || y + length * vertical > 10) {
       throw new Error('Ship must fit on board');
     }
 
@@ -33,6 +33,10 @@ class GameBoardClass {
 
   recieveAttack(x, y) {
     if (this.grid[x][y].state != null) {
+      console.log(`X: ${x}, Y: ${y}`);
+      console.log(`State: ${this.grid[x][y]}`);
+      console.log(this.grid[x][y]);
+
       throw new Error('Square already tried');
     } else if (this.grid[x][y].ship == null) {
       this.grid[x][y].state = 0;
