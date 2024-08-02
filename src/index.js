@@ -54,17 +54,17 @@ const populateCompShips = (compPlayer) => {
   }
 };
 
-const playerPlaceShipsStep = async () => {
-  return new Promise((resolve) => {
+const playerPlaceShipsStep = async () =>
+  new Promise((resolve) => {
     const shipSelector = document.querySelector('.selector');
     shipSelector.addEventListener('click', (event) => {
-      const target = event.target;
+      const { target } = event;
       let chosenShip = target;
       if (target.classList.contains('templateSquare')) {
         chosenShip = target.parentElement;
       }
       placingFunc(
-        Number.parseInt(chosenShip.getAttribute('data-length')),
+        Number.parseInt(chosenShip.getAttribute('data-length'), 10),
         chosenShip
       );
     });
@@ -87,8 +87,6 @@ const playerPlaceShipsStep = async () => {
         return;
       }
       if (chosenShip.id === 'rotateBtn') {
-        console.log(`Old Orien: ${orientation}`);
-
         orientation = orientation === 'h' ? 'v' : 'h';
         shipCont.setAttribute('data-orientation', orientation);
         if (orientation === 'v') {
@@ -96,31 +94,20 @@ const playerPlaceShipsStep = async () => {
         } else {
           shipCont.classList.remove('vertical');
         }
-        console.log(`New Orien: ${orientation}`);
 
         return;
       }
 
-      console.log(allShips);
-
       chosenShip.classList.add('highlightShipTemplate');
 
-      console.log('Back To Placing. Lengt: ' + currentLength);
-
-      // let currentLength = playerShipLengths.shift();
-      //const board = document.querySelector
       const squaresArr = document.querySelectorAll('.square');
-      //squaresArr.replaceWith(squaresArr.cloneNode(true));
 
-      //console.log(squaresArr);
       squaresArr.forEach((square) => {
         const parentDiv = square.parentElement;
         const children = [...parentDiv.children];
 
-        //console.log(children);
-        //console.log(children.slice(0, 2));
-        const currentY = Number.parseInt(square.getAttribute('data.y'));
-        const currentX = Number.parseInt(square.getAttribute('data.x'));
+        const currentY = Number.parseInt(square.getAttribute('data.y'), 10);
+        const currentX = Number.parseInt(square.getAttribute('data.x'), 10);
 
         let adjacentSquares = [];
         let divs = [];
@@ -141,27 +128,10 @@ const playerPlaceShipsStep = async () => {
           end = currentX + currentLength;
           divs2 = divs.slice(start, end);
           sqs = divs2.map((div) => [...div.children][9 - currentY]);
-          //console.log('SQUARE');
-          //console.log(square);
-          //console.log(divs2);
-          //console.log(sqs);
-
           adjacentSquares = sqs;
         }
 
         square.addEventListener('mouseover', () => {
-          // console.log('Current X: ');
-          // console.log(currentX);
-          // console.log('Start: ');
-          // console.log(start);
-          // console.log('End: ');
-          // console.log(end);
-          // console.log('divs: ');
-          // console.log(divs);
-          // console.log('divs2: ');
-          // console.log(divs2);
-          // console.log(`adjacent squares:`);
-          // console.log(adjacentSquares);
           square.classList.add('highlight');
           adjacentSquares.forEach((adjSquare) =>
             adjSquare.classList.add('highlight')
@@ -173,19 +143,15 @@ const playerPlaceShipsStep = async () => {
             adjSquare.classList.remove('highlight')
           );
         });
-        //console.log('added');
       });
       const isShipPlaced = await placeShipOnBoard(currentLength, orientation);
       if (isShipPlaced === 'ship placed') {
-        // console.log('definitely placed');
-        // console.log(chosenShip);
         chosenShip.remove();
-        //console.log(checkIfShipsAllPlaced());
+
         if (checkIfShipsAllPlaced()) {
           resolve('Play game');
         }
       }
-      //console.log('back in the while');
 
       player1Board = generateBoardFromGrid(player1.gameBoard.grid, true);
       playerBoardCont1.innerHTML = '';
@@ -193,7 +159,6 @@ const playerPlaceShipsStep = async () => {
       playerBoardCont1.appendChild(player1Board);
     };
   });
-};
 
 const checkIfShipsAllPlaced = () => {
   const shipCont = document.querySelector('.shipCont');
@@ -203,7 +168,6 @@ const checkIfShipsAllPlaced = () => {
 const placeShipOnBoard = (currentLength, orientation) =>
   new Promise((resolve) => {
     player1Board.addEventListener('click', (event) => {
-      console.log(event.target);
       try {
         player1.gameBoard.placeShip(
           currentLength,
@@ -213,7 +177,6 @@ const placeShipOnBoard = (currentLength, orientation) =>
           ],
           orientation
         );
-        console.log('SHPI HAS BEEN PLACED');
         resolve('ship placed');
       } catch (err) {
         console.log(err);
@@ -272,7 +235,6 @@ const gameFlow = async () => {
 
   gameContainer.appendChild(boardContainerRight);
 
-  console.log('Playing Now');
   let compGuessQueue = [];
 
   const body = document.querySelector('body');
@@ -289,10 +251,10 @@ const gameFlow = async () => {
   boardContainerRight.appendChild(enemyHeader);
   boardContainerRight.appendChild(playerComputerBoard);
 
-  while (gameOver != true) {
+  while (gameOver !== true) {
     const squaresArray = boardContainerRight.querySelectorAll('.square');
-    const playerTurn = () => {
-      return new Promise((resolve) => {
+    const playerTurn = () =>
+      new Promise((resolve) => {
         squaresArray.forEach((square) => {
           square.addEventListener('click', () => {
             playerComputer.gameBoard.recieveAttack(
@@ -303,7 +265,6 @@ const gameFlow = async () => {
           });
         });
       });
-    };
 
     await playerTurn();
 
@@ -322,7 +283,7 @@ const gameFlow = async () => {
     let compY;
     let shipHit = false;
     let shipSunk = false;
-    while (isValidMove != true) {
+    while (isValidMove !== true) {
       if (compGuessQueue.length > 0) {
         [compX, compY] = compGuessQueue.pop();
       } else {
@@ -335,8 +296,6 @@ const gameFlow = async () => {
         isValidMove = true;
 
         if (shipHit) {
-          console.log(shipSunk);
-
           shipSunk = player1.gameBoard.grid[compX][compY].ship.sunk;
         }
       } catch {
@@ -352,8 +311,6 @@ const gameFlow = async () => {
     } else if (shipSunk) {
       compGuessQueue = [];
     }
-
-    console.log(compGuessQueue);
 
     playerBoard = generateBoardFromGrid(player1.gameBoard.grid, true);
     boardContainerLeft.innerHTML = '';
