@@ -328,8 +328,6 @@ const gameFlow = async () => {
   body.appendChild(gameOverScreen);
 };
 
-console.log('We are in Index');
-
 const playerBoardCont1 = document.querySelector('.board-container-left');
 const player1 = new PlayerClass();
 
@@ -343,7 +341,5 @@ playerBoardCont1.appendChild(player1Board);
 
 const playerComputer = new PlayerClass(true);
 populateCompShips(playerComputer);
-
-console.log('Starting Game Flow');
 
 gameFlow();
