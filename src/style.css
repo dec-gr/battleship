@@ -1,24 +1,54 @@
+body {
+  --background-color: #1b1e22;
+  --highlight-color: aqua;
+  --red-color: red;
+  --sunk-red: darkred;
+  margin: 0px;
+}
+
 .game-container {
   display: flex;
   justify-content: space-around;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--background-color);
+  gap: 50px;
 }
 
 .board-container-left,
 .board-container-right {
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
+  align-items: center;
+}
+
+.board-container-left > .player-board {
+  border: solid 3px blue;
+}
+
+.board-container-right > .player-board {
+  border: solid 3px var(--red-color);
+}
+
+.headerText {
+  color: white;
+  font-size: 30px;
+  font-weight: 700;
+  font-family: monospace;
 }
 
 .player-board {
   padding: 2px;
-  border: solid 2px rgb(255, 0, 0);
+  background-color: white;
   display: grid;
   grid-template-columns: repeat(10, 50px);
   grid-template-rows: repeat(10, 50px);
   gap: 2px;
 }
 
-.square {
+.square,
+.templateSquare {
   height: 50px;
   width: 50px;
   background-color: #2458af;
@@ -26,14 +56,11 @@
 }
 
 .placedShip {
-  background-color: aqua;
+  background-color: var(--highlight-color);
 }
 
-.square:hover {
-  background-color: aquamarine;
-}
 .highlight {
-  background-color: purple;
+  background-color: var(--highlight-color);
 }
 
 .missSquare {
@@ -42,15 +69,124 @@
 }
 
 .hitSquare {
-  background-color: red;
+  background-color: var(--red-color);
   pointer-events: none;
 }
 
 .isSunk {
-  background-color: darkred;
+  background-color: var(--sunk-red);
   pointer-events: none;
 }
 
 .deactivateBoards {
   pointer-events: none;
+}
+
+.selector {
+  border: solid;
+  width: 300px;
+  height: 400px;
+  padding: 10px 30px;
+  background-color: #292e36;
+  border: solid 2px white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#rotateBtn {
+  margin-bottom: 30px;
+  margin-top: 10px;
+  padding: 20px 20px;
+  border: solid 2px var(--highlight-color);
+  color: white;
+  background-color: transparent;
+  cursor: pointer;
+  font-family: monospace;
+}
+
+#rotateBtn:hover {
+  border: white solid 2px;
+  background-color: var(--highlight-color);
+}
+
+.shipCont {
+  display: flex;
+  flex-direction: column;
+}
+
+.shipCont > div {
+  height: 50px;
+  width: 300px;
+  margin-bottom: 10px;
+}
+
+.shipCont > .highlight > .templateSquare {
+  background-color: var(--highlight-color);
+}
+
+.shipTemplate {
+  display: grid;
+  grid-template-columns: repeat(5, 50px);
+  gap: 2px;
+  margin-right: 10px;
+}
+
+.highlightShipTemplate > .templateSquare {
+  background-color: var(--highlight-color);
+}
+
+.vertical > .shipTemplate {
+  grid-template-rows: repeat(5, 50px);
+  gap: 2px;
+  grid-template-columns: none;
+  width: auto;
+}
+
+.vertical.shipCont {
+  flex-direction: row;
+}
+
+.gameEndCont {
+  opacity: 1;
+  z-index: 10;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 10s;
+}
+
+.endGameText {
+  color: white;
+  font-size: 50px;
+  margin-bottom: 25px;
+  font-weight: 600;
+  font-family: monospace;
+}
+
+.restartBtn {
+  padding: 10px 20px;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: monospace;
+  cursor: pointer;
+}
+
+.greenBackground {
+  background-color: rgba(0, 255, 0, 0.8);
+}
+
+.redBackground {
+  background-color: rgba(255, 0, 0, 0.8);
+}
+
+.board-container-right .square:hover {
+  background-color: var(--highlight-color);
+  cursor: pointer;
 }
